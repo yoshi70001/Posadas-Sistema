@@ -1,0 +1,49 @@
+{{define "content"}}
+<div class="container">
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h1>Panel de Administración</h1>
+            <div>
+                <a href="/admin/users" class="btn-primary" style="margin-right: 10px;">Gestionar Usuarios</a>
+                <a href="/logout" class="btn-primary" style="background-color: #666;">Cerrar Sesión</a>
+            </div>
+        </div>
+        <p>Bienvenido, <strong>{{.User}}</strong>. Aquí puedes ver los registros para la posada.</p>
+
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Edad</th>
+                        <th>DNI</th>
+                        <th>Apoderado</th>
+                        <th>Contacto</th>
+                        <th>Año</th>
+                        <th>Fecha Registro</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{range .Registrations}}
+                    <tr>
+                        <td>{{.ID}}</td>
+                        <td>{{.Name}}</td>
+                        <td>{{.Age}}</td>
+                        <td>{{.DNI}}</td>
+                        <td>{{if .GuardianName}}{{.GuardianName}}{{else}}-{{end}}</td>
+                        <td>{{if .GuardianContact}}{{.GuardianContact}}{{else}}-{{end}}</td>
+                        <td>{{.Year}}</td>
+                        <td>{{.CreatedAt.Format "02/01/2006 15:04"}}</td>
+                    </tr>
+                    {{else}}
+                    <tr>
+                        <td colspan="8" class="text-center">No hay registros aún.</td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{{end}}

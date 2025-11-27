@@ -1,0 +1,73 @@
+{{define "content"}}
+<div class="container">
+    <div class="card">
+        <h1 class="text-center">Formulario de Registro</h1>
+        <p class="text-center">Por favor completa tus datos para asistir a la posada.</p>
+
+        <form action="/register/submit" method="POST">
+            <div class="form-group">
+                <label for="name" class="form-label">Nombre Completo del Participante</label>
+                <input type="text" id="name" name="name" class="form-control" required placeholder="Ej. Juan Pérez">
+            </div>
+
+            <div class="form-group">
+                <label for="age" class="form-label">Edad</label>
+                <input type="number" id="age" name="age" class="form-control" required min="1" max="100"
+                    onchange="checkAge()">
+            </div>
+
+            <div class="form-group">
+                <label for="dni" class="form-label">DNI / Identificación</label>
+                <input type="text" id="dni" name="dni" class="form-control" required placeholder="Número de documento">
+            </div>
+
+            <hr style="margin: 2rem 0; border: 0; border-top: 2px dashed #ddd;">
+            <h3>Datos del Apoderado / Contacto de Emergencia</h3>
+            <p id="guardian-note" style="font-size: 0.9rem; color: #666;">Requerido para menores de edad.</p>
+
+            <div class="form-group">
+                <label for="guardian_name" class="form-label">Nombre del Apoderado</label>
+                <input type="text" id="guardian_name" name="guardian_name" class="form-control"
+                    placeholder="Nombre del padre o tutor">
+            </div>
+
+            <div class="form-group">
+                <label for="guardian_contact" class="form-label">Teléfono de Contacto</label>
+                <input type="tel" id="guardian_contact" name="guardian_contact" class="form-control"
+                    placeholder="Ej. +51 999 999 999">
+            </div>
+
+            <div class="form-group">
+                <label for="year" class="form-label">Año de la Posada</label>
+                <input type="number" id="year" name="year" class="form-control" required value="2025"
+                    placeholder="Ej. 2025">
+            </div>
+
+            <div class="text-center mt-4">
+                <button type="submit" class="btn-primary">Enviar Registro</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function checkAge() {
+        const age = document.getElementById('age').value;
+        const guardianName = document.getElementById('guardian_name');
+        const guardianContact = document.getElementById('guardian_contact');
+        const guardianNote = document.getElementById('guardian-note');
+
+        if (age && age < 18) {
+            guardianName.required = true;
+            guardianContact.required = true;
+            guardianNote.style.color = 'var(--christmas-red)';
+            guardianNote.innerText = "¡Es menor de edad! Estos datos son OBLIGATORIOS.";
+        } else {
+            guardianName.required = false;
+            guardianContact.required = false;
+            guardianNote.style.color = '#666';
+            guardianNote.innerText = "Opcional para mayores de edad.";
+        }
+    }
+</script>
+{{end}}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Posadas Navideñas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">🎄 Posadas 2025</a>
+        <div class="navbar-nav">
+            <a href="/">Inicio</a>
+            <a href="/register">Registrarse</a>
+            <a href="/login">Admin</a>
+        </div>
+    </nav>
+
+    {{template "content" .}}
+
+    <footer>
+        <p>&copy; 2025 Sistema de Posadas Navideñas. ¡Felices Fiestas!</p>
+    </footer>
+
+    <!-- Simple Snow Effect Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const snowContainer = document.body;
+            const snowflakes = ['❄', '❅', '❆'];
+            
+            setInterval(() => {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                snowflake.innerText = snowflakes[Math.floor(Math.random() * snowflakes.length)];
+                snowflake.style.left = Math.random() * 100 + 'vw';
+                snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
+                snowflake.style.opacity = Math.random();
+                snowflake.style.fontSize = Math.random() * 10 + 10 + 'px';
+                
+                snowContainer.appendChild(snowflake);
+                
+                setTimeout(() => {
+                    snowflake.remove();
+                }, 5000);
+            }, 200);
+        });
+    </script>
+</body>
+</html>

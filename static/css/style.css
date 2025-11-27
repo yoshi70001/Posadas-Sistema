@@ -1,0 +1,197 @@
+:root {
+    --christmas-red: #D42426;
+    --christmas-green: #165B33;
+    --snow-white: #F8F9FA;
+    --gold: #F8B229;
+    --dark-green: #0B2E19;
+    --text-color: #333;
+    --bg-color: #f0f4f8;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    background-image: url('https://www.transparenttextures.com/patterns/snow.png'); /* Subtle snow texture */
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--christmas-red);
+    color: var(--snow-white);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--snow-white);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.navbar-nav a {
+    color: var(--snow-white);
+    text-decoration: none;
+    margin-left: 1.5rem;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.navbar-nav a:hover {
+    color: var(--gold);
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(135deg, var(--christmas-green), var(--dark-green));
+    color: var(--snow-white);
+    padding: 4rem 2rem;
+    text-align: center;
+    border-bottom: 5px solid var(--gold);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    font-family: 'Mountains of Christmas', cursive; /* Google Font */
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
+.btn-primary {
+    background-color: var(--christmas-red);
+    color: var(--snow-white);
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: inline-block;
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(212, 36, 38, 0.4);
+    background-color: #b91c1e;
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* Cards */
+.card {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    margin-bottom: 2rem;
+    border-top: 4px solid var(--christmas-green);
+}
+
+.card h2 {
+    color: var(--christmas-green);
+    margin-top: 0;
+}
+
+/* Forms */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--dark-green);
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.8rem;
+    border: 2px solid #e1e1e1;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+}
+
+.form-control:focus {
+    border-color: var(--christmas-green);
+    outline: none;
+}
+
+/* Footer */
+footer {
+    background-color: var(--dark-green);
+    color: var(--snow-white);
+    text-align: center;
+    padding: 2rem;
+    margin-top: 4rem;
+}
+
+/* Utilities */
+.text-center { text-align: center; }
+.mt-4 { margin-top: 1.5rem; }
+.mb-4 { margin-bottom: 1.5rem; }
+
+/* Snow Animation (Simple) */
+@keyframes snow {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(100vh); }
+}
+
+.snowflake {
+    position: fixed;
+    top: -10px;
+    color: #fff;
+    font-size: 1em;
+    font-family: Arial;
+    text-shadow: 0 0 1px #000;
+    animation: snow 10s linear infinite;
+    z-index: -1;
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+th, td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+th {
+    background-color: var(--christmas-green);
+    color: white;
+}
+
+tr:hover {
+    background-color: #f9f9f9;
+}

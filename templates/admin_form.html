@@ -1,0 +1,21 @@
+{{define "content"}}
+<div class="container">
+    <h1>{{if .ID}}Editar Administrador{{else}}Crear Administrador{{end}}</h1>
+    <form action="{{if .ID}}/admin/users/update{{else}}/admin/users/store{{end}}" method="POST" class="form-card">
+        {{if .ID}}<input type="hidden" name="id" value="{{.ID}}">{{end}}
+
+        <div class="form-group">
+            <label for="username">Usuario</label>
+            <input type="text" id="username" name="username" value="{{if .Username}}{{.Username}}{{end}}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Contraseña {{if .ID}}(Dejar en blanco para mantener la actual){{end}}</label>
+            <input type="password" id="password" name="password" {{if not .ID}}required{{end}}>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a href="/admin/users" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{{end}}
