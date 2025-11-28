@@ -1,67 +1,113 @@
 :root {
-    --christmas-red: #D42426;
-    --christmas-green: #165B33;
-    --snow-white: #F8F9FA;
-    --gold: #F8B229;
-    --dark-green: #0B2E19;
-    --text-color: #333;
-    --bg-color: #f0f4f8;
+    --christmas-red: #c8102e;
+    --christmas-green: #1d7a46;
+    --snow-white: #f8f9fa;
+    --gold: #f9a602;
+    --dark-green: #145a32;
+    --text-color: #343a40;
+    --bg-color: #fdfdfd;
+    --card-bg: #ffffff;
+    --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
 body {
     font-family: 'Outfit', sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
-    margin: 0;
-    padding: 0;
-    line-height: 1.6;
-    background-image: url('https://www.transparenttextures.com/patterns/snow.png'); /* Subtle snow texture */
+    line-height: 1.7;
+    background-image: url('https://www.transparenttextures.com/patterns/snow-4.png');
 }
 
-/* General improvements for Bootstrap integration */
-body {
-    padding-top: 56px; /* Adjust for fixed navbar height */
+.navbar {
+    background-color: var(--christmas-red);
+    box-shadow: 0 4px 8px var(--shadow-color);
+    border-bottom: 3px solid var(--gold);
 }
 
-/* Custom styles for Christmas theme */
-.bg-danger { /* Re-purposing Bootstrap's bg-danger for Christmas Red */
-    background-color: var(--christmas-red) !important;
+.navbar-brand {
+    font-family: 'Mountains of Christmas', cursive;
+    font-size: 2rem;
+    color: var(--snow-white) !important;
+}
+
+.navbar-nav .nav-link {
+    color: var(--snow-white) !important;
+    font-weight: 600;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--gold) !important;
+    transform: translateY(-2px);
+}
+
+.hero {
+    background: linear-gradient(135deg, var(--christmas-red), var(--dark-green));
+    color: var(--snow-white);
+    padding: 5rem 2rem;
+    text-align: center;
+    position: relative;
+    border-bottom: 5px solid var(--gold);
+}
+
+.hero h1 {
+    font-family: 'Mountains of Christmas', cursive;
+    font-size: 4rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.hero p {
+    font-size: 1.25rem;
+    max-width: 600px;
+    margin: 1rem auto;
+}
+
+.btn {
+    border-radius: 50px;
+    font-weight: bold;
+    padding: 0.8rem 2rem;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .btn-primary {
-    background-color: var(--christmas-red);
-    border-color: var(--christmas-red);
+    background-color: var(--gold);
+    border-color: var(--gold);
+    color: var(--dark-green);
 }
 
 .btn-primary:hover {
-    background-color: #b91c1e;
-    border-color: #b91c1e;
+    background-color: #e09500;
+    border-color: #e09500;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
-.btn-success {
-    background-color: var(--christmas-green);
-    border-color: var(--christmas-green);
-}
-
-.btn-success:hover {
-    background-color: #124d29;
-    border-color: #124d29;
+.container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 
 .card {
-    border-radius: 0.75rem;
+    background-color: var(--card-bg);
     border: none;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+    border-radius: 15px;
+    box-shadow: 0 8px 16px var(--shadow-color);
+    margin-bottom: 2rem;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px var(--shadow-color);
 }
 
 .card-header {
     background-color: var(--christmas-green);
     color: var(--snow-white);
-    border-bottom: none;
     font-weight: bold;
-    border-top-left-radius: 0.75rem;
-    border-top-right-radius: 0.75rem;
-    padding: 1rem 1.5rem;
+    padding: 1.5rem;
+    border-bottom: 3px solid var(--gold);
 }
 
 .table thead {
@@ -69,176 +115,48 @@ body {
     color: var(--snow-white);
 }
 
-.form-control:focus {
-    border-color: var(--christmas-green);
-    box-shadow: 0 0 0 0.25rem rgba(22, 91, 51, 0.25);
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(29, 122, 70, 0.05);
 }
 
-/* Remove original navbar styles as Bootstrap's will take over */
-.navbar {
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Keep shadow for consistency */
-}
-
-.navbar-brand {
-    font-family: 'Mountains of Christmas', cursive;
-    font-size: 1.8rem;
-    color: var(--snow-white) !important;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.navbar-nav .nav-link {
-    color: var(--gold) !important;
-    font-weight: 500;
-    transition: color 0.3s;
-}
-
-/* .navbar-nav .nav-link:hover {
-    color: var(--gold) !important;
-} */
-
-/* Hero Section */
-.hero {
-    background: linear-gradient(135deg, var(--christmas-green), var(--dark-green));
-    color: var(--snow-white);
-    padding: 4rem 2rem;
-    text-align: center;
-    border-bottom: 5px solid var(--gold);
-    position: relative;
-    overflow: hidden;
-}
-
-.hero h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    font-family: 'Mountains of Christmas', cursive; /* Google Font */
-}
-
-.hero p {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-    opacity: 0.9;
-}
-
-.btn-primary {
-    background-color: var(--christmas-red);
-    color: var(--snow-white);
-    padding: 0.8rem 2rem;
-    border: none;
-    border-radius: 50px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    text-decoration: none;
-    transition: transform 0.2s, box-shadow 0.2s;
-    display: inline-block;
-    font-weight: bold;
-}
-
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(212, 36, 38, 0.4);
-    background-color: #b91c1e;
-}
-
-/* Container */
-.container {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 1rem;
-}
-
-/* Cards */
-.card {
-    background: white;
-    border-radius: 15px;
-    padding: 2rem;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-    margin-bottom: 2rem;
-    border-top: 4px solid var(--christmas-green);
-}
-
-.card h2 {
-    color: var(--christmas-green);
-    margin-top: 0;
-}
-
-/* Forms */
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-.form-label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    color: var(--dark-green);
-}
-
-.form-control {
-    width: 100%;
-    padding: 0.8rem;
-    border: 2px solid #e1e1e1;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: border-color 0.3s;
-    box-sizing: border-box;
-}
-
-.form-control:focus {
-    border-color: var(--christmas-green);
-    outline: none;
-}
-
-/* Footer */
 footer {
     background-color: var(--dark-green);
     color: var(--snow-white);
     text-align: center;
-    padding: 2rem;
+    padding: 3rem 1rem;
     margin-top: 4rem;
 }
 
-/* Utilities */
-.text-center { text-align: center; }
-.mt-4 { margin-top: 1.5rem; }
-.mb-4 { margin-bottom: 1.5rem; }
-
-/* Snow Animation (Simple) */
-@keyframes snow {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(100vh); }
+/* Snow Animation */
+@keyframes fall {
+  0% {transform: translateY(-10vh) translateX(-5vw);}
+  100% {transform: translateY(105vh) translateX(5vw);}
 }
 
 .snowflake {
     position: fixed;
-    top: -10px;
-    color: #fff;
-    font-size: 1em;
-    font-family: Arial;
-    text-shadow: 0 0 1px #000;
-    animation: snow 10s linear infinite;
-    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    background: white;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    animation: fall linear infinite;
 }
 
-/* Table */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 3rem;
+    }
+    .hero {
+        padding: 4rem 1rem;
+    }
 }
 
-th, td {
-    padding: 1rem;
-    text-align: left;
-    border-bottom: 1px solid #eee;
-}
-
-th {
-    background-color: var(--christmas-green);
-    color: white;
-}
-
-tr:hover {
-    background-color: #f9f9f9;
+.form-card {
+    max-width: 600px;
+    margin: auto;
 }
