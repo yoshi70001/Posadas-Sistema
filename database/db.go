@@ -41,12 +41,47 @@ func createTables() {
 		is_active BOOLEAN NOT NULL
 	);`
 
+	createEventsTable := `
+	CREATE TABLE IF NOT EXISTS events (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		name TEXT NOT NULL,
+		type TEXT NOT NULL CHECK(type IN ('ensayo', 'salida')),
+		date DATE NOT NULL,
+		time TEXT NOT NULL,
+		location TEXT NOT NULL,
+		description TEXT,
+		created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+	);`
+
+	createAttendanceTable := `
+	CREATE TABLE IF NOT EXISTS attendance (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		event_id INTEGER NOT NULL,
+		registration_id INTEGER NOT NULL,
+		present BOOLEAN NOT NULL DEFAULT 0,
+		notes TEXT,
+		marked_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+		FOREIGN KEY(event_id) REFERENCES events(id) ON DELETE CASCADE,
+		FOREIGN KEY(registration_id) REFERENCES registrations(id) ON DELETE CASCADE,
+		UNIQUE(event_id, registration_id)
+	);`
+
 	_, err := DB.Exec(createRegistrationsTable)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	_, err = DB.Exec(createUsersTable)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	_, err = DB.Exec(createEventsTable)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	_, err = DB.Exec(createAttendanceTable)
 	if err != nil {
 		log.Fatal(err)
 	}

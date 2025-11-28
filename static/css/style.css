@@ -18,38 +18,85 @@ body {
     background-image: url('https://www.transparenttextures.com/patterns/snow.png'); /* Subtle snow texture */
 }
 
-/* Navbar */
-.navbar {
+/* General improvements for Bootstrap integration */
+body {
+    padding-top: 56px; /* Adjust for fixed navbar height */
+}
+
+/* Custom styles for Christmas theme */
+.bg-danger { /* Re-purposing Bootstrap's bg-danger for Christmas Red */
+    background-color: var(--christmas-red) !important;
+}
+
+.btn-primary {
     background-color: var(--christmas-red);
+    border-color: var(--christmas-red);
+}
+
+.btn-primary:hover {
+    background-color: #b91c1e;
+    border-color: #b91c1e;
+}
+
+.btn-success {
+    background-color: var(--christmas-green);
+    border-color: var(--christmas-green);
+}
+
+.btn-success:hover {
+    background-color: #124d29;
+    border-color: #124d29;
+}
+
+.card {
+    border-radius: 0.75rem;
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+}
+
+.card-header {
+    background-color: var(--christmas-green);
     color: var(--snow-white);
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border-bottom: none;
+    font-weight: bold;
+    border-top-left-radius: 0.75rem;
+    border-top-right-radius: 0.75rem;
+    padding: 1rem 1.5rem;
+}
+
+.table thead {
+    background-color: var(--christmas-green);
+    color: var(--snow-white);
+}
+
+.form-control:focus {
+    border-color: var(--christmas-green);
+    box-shadow: 0 0 0 0.25rem rgba(22, 91, 51, 0.25);
+}
+
+/* Remove original navbar styles as Bootstrap's will take over */
+.navbar {
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Keep shadow for consistency */
 }
 
 .navbar-brand {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--snow-white);
-    text-decoration: none;
+    font-family: 'Mountains of Christmas', cursive;
+    font-size: 1.8rem;
+    color: var(--snow-white) !important;
     display: flex;
     align-items: center;
     gap: 0.5rem;
 }
 
-.navbar-nav a {
-    color: var(--snow-white);
-    text-decoration: none;
-    margin-left: 1.5rem;
+.navbar-nav .nav-link {
+    color: var(--gold) !important;
     font-weight: 500;
     transition: color 0.3s;
 }
 
-.navbar-nav a:hover {
-    color: var(--gold);
-}
+/* .navbar-nav .nav-link:hover {
+    color: var(--gold) !important;
+} */
 
 /* Hero Section */
 .hero {

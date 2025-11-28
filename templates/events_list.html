@@ -1,0 +1,91 @@
+{{define "content"}}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Gestión de Eventos</h2>
+        <a href="/admin/events/create" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Nuevo Evento
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Lista de Eventos</h5>
+                </div>
+                <div class="card-body">
+                    {{if .}}
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Tipo</th>
+                                    <th>Fecha</th>
+                                    <th>Hora</th>
+                                    <th>Ubicación</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{range .}}
+                                <tr>
+                                    <td>{{.Name}}</td>
+                                    <td>
+                                        <span class="badge {{if eq .Type "ensayo"}}bg-primary{{else}}bg-success{{end}}">
+                                            {{if eq .Type "ensayo"}}Ensayo{{else}}Salida{{end}}
+                                        </span>
+                                    </td>
+                                    <td>{{.Date.Format "02/01/2006"}}</td>
+                                    <td>{{.Time}}</td>
+                                    <td>{{.Location}}</td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="/admin/attendance?event_id={{.ID}}" class="btn btn-sm btn-success" title="Pasar Lista">
+                                                <i class="fas fa-clipboard-check"></i>
+                                            </a>
+                                            <a href="/admin/events/edit?id={{.ID}}" class="btn btn-sm btn-warning" title="Editar">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <form method="POST" action="/admin/events/delete?id={{.ID}}" class="d-inline"
+                                                  onsubmit="return confirm('¿Estás seguro de que deseas eliminar este evento?')">
+                                                <button type="submit" class="btn btn-sm btn-danger" title="Eliminar">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {{end}}
+                            </tbody>
+                        </table>
+                    </div>
+                    {{else}}
+                    <div class="text-center py-5">
+                        <i class="fas fa-calendar-alt fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No hay eventos registrados</h5>
+                        <p class="text-muted">Crea tu primer evento para comenzar a gestionar las asistencias.</p>
+                        <a href="/admin/events/create" class="btn btn-primary">Crear Primer Evento</a>
+                    </div>
+                    {{end}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Add some interactivity if needed
+document.addEventListener('DOMContentLoaded', function() {
+    // Add confirmation for delete actions
+    const deleteButtons = document.querySelectorAll('form[onsubmit]');
+    deleteButtons.forEach(form => {
+        form.addEventListener('submit', function(e) {
+            if (!confirm('¿Estás seguro de que deseas eliminar este evento? Esta acción no se puede deshacer.')) {
+                e.preventDefault();
+            }
+        });
+    });
+});
+</script>
+{{end}}

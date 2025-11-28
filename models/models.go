@@ -19,3 +19,23 @@ type User struct {
 	Password string `json:"password"` // Hashed
 	IsActive bool   `json:"is_active"`
 }
+
+type Event struct {
+	ID          int       `json:"id"`
+	Name        string    `json:"name"`
+	Type        string    `json:"type"` // "ensayo" o "salida"
+	Date        time.Time `json:"date"`
+	Time        string    `json:"time"` // "4:00 PM" o "6:00 PM"
+	Location    string    `json:"location"`
+	Description string    `json:"description"`
+	CreatedAt   time.Time `json:"created_at"`
+}
+
+type Attendance struct {
+	ID            int       `json:"id"`
+	EventID       int       `json:"event_id"`
+	RegistrationID int      `json:"registration_id"`
+	Present       bool      `json:"present"`
+	Notes         string    `json:"notes"`
+	MarkedAt      time.Time `json:"marked_at"`
+}

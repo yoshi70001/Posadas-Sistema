@@ -1,0 +1,131 @@
+{{define "content"}}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h4 class="mb-1">{{.Event.Name}}</h4>
+                            <p class="text-muted mb-0">
+                                <i class="fas fa-calendar"></i> {{.Event.Date.Format "02/01/2006"}} |
+                                <i class="fas fa-clock"></i> {{.Event.Time}} |
+                                <i class="fas fa-map-marker-alt"></i> {{.Event.Location}}
+                            </p>
+                        </div>
+                        <span class="badge {{if eq .Event.Type "ensayo"}}bg-primary{{else}}bg-success{{end}} fs-6">
+                            {{if eq .Event.Type "ensayo"}}Ensayo{{else}}Salida{{end}}
+                        </span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form action="/admin/attendance/store" method="POST">
+                        <input type="hidden" name="event_id" value="{{.Event.ID}}">
+
+                        <div class="mb-4">
+                            <h5>Lista de Participantes</h5>
+                            <p class="text-muted">Marca con la casilla de verificación a los participantes que asistieron.</p>
+                        </div>
+
+                        {{if .Registrations}}
+                        <div class="row">
+                            {{range .Registrations}}
+                            <div class="col-md-6 col-lg-4 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body d-flex align-items-center">
+                                        <div class="form-check flex-grow-1">
+                                            <input class="form-check-input attendance-checkbox" type="checkbox"
+                                                   id="present_{{.ID}}" name="present" value="{{.ID}}"
+                                                   {{if .HasAttendance}}{{if .Present}}checked{{end}}{{end}}>
+                                            <label class="form-check-label" for="present_{{.ID}}">
+                                                <div>
+                                                    <strong>{{.Name}}</strong>
+                                                    <br>
+                                                    <small class="text-muted">Edad: {{.Age}} años | DNI: {{.DNI}}</small>
+                                                </div>
+                                            </label>
+                                        </div>
+                                        {{if .HasAttendance}}
+                                        <span class="badge {{if .Present}}bg-success{{else}}bg-secondary{{end}} ms-2">
+                                            {{if .Present}}Presente{{else}}Ausente{{end}}
+                                        </span>
+                                        {{end}}
+                                    </div>
+                                </div>
+                            </div>
+                            {{end}}
+                        </div>
+                        {{else}}
+                        <div class="text-center py-5">
+                            <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No hay participantes registrados</h5>
+                            <p class="text-muted">Primero debes registrar participantes antes de poder marcar asistencia.</p>
+                        </div>
+                        {{end}}
+
+                        <div class="mb-4">
+                            <label for="notes" class="form-label">Notas adicionales (opcional)</label>
+                            <textarea class="form-control" id="notes" name="notes" rows="3"
+                                      placeholder="Agregar comentarios sobre la asistencia..."></textarea>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <button type="button" class="btn btn-outline-secondary" onclick="selectAll()">Seleccionar Todos</button>
+                                <button type="button" class="btn btn-outline-secondary ms-2" onclick="clearAll()">Limpiar Selección</button>
+                            </div>
+                            <div>
+                                <a href="/admin/events" class="btn btn-secondary me-2">Cancelar</a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i> Guardar Asistencia
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function selectAll() {
+    const checkboxes = document.querySelectorAll('.attendance-checkbox');
+    checkboxes.forEach(cb => cb.checked = true);
+}
+
+function clearAll() {
+    const checkboxes = document.querySelectorAll('.attendance-checkbox');
+    checkboxes.forEach(cb => cb.checked = false);
+}
+
+// Add counter for selected participants
+document.addEventListener('DOMContentLoaded', function() {
+    const checkboxes = document.querySelectorAll('.attendance-checkbox');
+    const counter = document.createElement('span');
+    counter.id = 'selection-counter';
+    counter.className = 'badge bg-info ms-2';
+
+    // Insert counter next to the buttons
+    const buttonGroup = document.querySelector('.d-flex.justify-content-between');
+    if (buttonGroup) {
+        const leftDiv = buttonGroup.querySelector('div:first-child');
+        leftDiv.appendChild(counter);
+    }
+
+    function updateCounter() {
+        const checkedCount = document.querySelectorAll('.attendance-checkbox:checked').length;
+        const totalCount = checkboxes.length;
+        counter.textContent = `${checkedCount}/${totalCount} seleccionados`;
+    }
+
+    // Initial count
+    updateCounter();
+
+    // Update on change
+    checkboxes.forEach(cb => {
+        cb.addEventListener('change', updateCounter);
+    });
+});
+</script>
+{{end}}

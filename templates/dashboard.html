@@ -1,49 +1,277 @@
 {{define "content"}}
-<div class="container">
-    <div class="card">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h1>Panel de Administración</h1>
-            <div>
-                <a href="/admin/users" class="btn-primary" style="margin-right: 10px;">Gestionar Usuarios</a>
-                <a href="/logout" class="btn-primary" style="background-color: #666;">Cerrar Sesión</a>
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="container mt-4">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4 rounded">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">Panel de Administración</span>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/admin/events">
+                    <i class="fas fa-calendar-alt"></i> Eventos
+                </a>
+                <a class="nav-link" href="/admin/users">
+                    <i class="fas fa-users-cog"></i> Usuarios
+                </a>
+                <a class="nav-link" href="/logout">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </a>
             </div>
         </div>
-        <p>Bienvenido, <strong>{{.User}}</strong>. Aquí puedes ver los registros para la posada.</p>
+    </nav>
 
-        <div style="overflow-x: auto;">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Edad</th>
-                        <th>DNI</th>
-                        <th>Apoderado</th>
-                        <th>Contacto</th>
-                        <th>Año</th>
-                        <th>Fecha Registro</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{range .Registrations}}
-                    <tr>
-                        <td>{{.ID}}</td>
-                        <td>{{.Name}}</td>
-                        <td>{{.Age}}</td>
-                        <td>{{.DNI}}</td>
-                        <td>{{if .GuardianName}}{{.GuardianName}}{{else}}-{{end}}</td>
-                        <td>{{if .GuardianContact}}{{.GuardianContact}}{{else}}-{{end}}</td>
-                        <td>{{.Year}}</td>
-                        <td>{{.CreatedAt.Format "02/01/2006 15:04"}}</td>
-                    </tr>
-                    {{else}}
-                    <tr>
-                        <td colspan="8" class="text-center">No hay registros aún.</td>
-                    </tr>
-                    {{end}}
-                </tbody>
-            </table>
+    <!-- Welcome Message -->
+    <div class="alert alert-info">
+        <h4 class="alert-heading">¡Bienvenido, {{.User}}!</h4>
+        <p class="mb-0">Aquí puedes gestionar los registros de participantes y controlar la asistencia a los eventos de las posadas.</p>
+    </div>
+
+    <!-- Attendance Statistics Cards -->
+    <div class="row mb-4" id="stats-row">
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="fas fa-calendar-check fa-2x text-primary mb-2"></i>
+                    <h4 class="card-title" id="total-events">-</h4>
+                    <p class="card-text">Total Eventos</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="fas fa-user-check fa-2x text-success mb-2"></i>
+                    <h4 class="card-title" id="total-attendances">-</h4>
+                    <p class="card-text">Asistencias Totales</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="fas fa-music fa-2x text-info mb-2"></i>
+                    <h4 class="card-title" id="ensayos-count">-</h4>
+                    <p class="card-text">Ensayos</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="fas fa-walking fa-2x text-warning mb-2"></i>
+                    <h4 class="card-title" id="salidas-count">-</h4>
+                    <p class="card-text">Salidas</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Attendance Chart -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-chart-line"></i> Rendimiento de Asistencia por Mes</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="attendanceChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabs for different sections -->
+    <ul class="nav nav-tabs" id="dashboardTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="participants-tab" data-bs-toggle="tab" data-bs-target="#participants" type="button" role="tab">
+                <i class="fas fa-users"></i> Participantes
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="events-tab" data-bs-toggle="tab" data-bs-target="#events" type="button" role="tab">
+                <i class="fas fa-calendar"></i> Eventos Recientes
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content mt-3" id="dashboardTabsContent">
+        <!-- Participants Tab -->
+        <div class="tab-pane fade show active" id="participants" role="tabpanel">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Lista de Participantes Registrados</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Edad</th>
+                                    <th>DNI</th>
+                                    <th>Apoderado</th>
+                                    <th>Contacto</th>
+                                    <th>Año</th>
+                                    <th>Fecha Registro</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{range .Registrations}}
+                                <tr>
+                                    <td>{{.ID}}</td>
+                                    <td>{{.Name}}</td>
+                                    <td>{{.Age}}</td>
+                                    <td>{{.DNI}}</td>
+                                    <td>{{if .GuardianName}}{{.GuardianName}}{{else}}-{{end}}</td>
+                                    <td>{{if .GuardianContact}}{{.GuardianContact}}{{else}}-{{end}}</td>
+                                    <td>{{.Year}}</td>
+                                    <td>{{.CreatedAt.Format "02/01/2006 15:04"}}</td>
+                                </tr>
+                                {{else}}
+                                <tr>
+                                    <td colspan="8" class="text-center py-4">
+                                        <i class="fas fa-users fa-2x text-muted mb-2"></i>
+                                        <br>No hay participantes registrados aún.
+                                        <br><small class="text-muted">Los participantes aparecerán aquí una vez que se registren.</small>
+                                    </td>
+                                </tr>
+                                {{end}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Events Tab -->
+        <div class="tab-pane fade" id="events" role="tabpanel">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5>Eventos Recientes</h5>
+                    <a href="/admin/events" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus"></i> Gestionar Eventos
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div id="recent-events">
+                        <div class="text-center py-4">
+                            <i class="fas fa-spinner fa-spin fa-2x text-muted mb-2"></i>
+                            <br>Cargando eventos...
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+// Load dashboard data and initialize charts
+document.addEventListener('DOMContentLoaded', function() {
+    loadDashboardData();
+
+    // Initialize chart
+    const ctx = document.getElementById('attendanceChart').getContext('2d');
+    window.attendanceChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Ensayos',
+                data: [],
+                borderColor: 'rgb(13, 110, 253)',
+                backgroundColor: 'rgba(13, 110, 253, 0.1)',
+                tension: 0.4
+            }, {
+                label: 'Salidas',
+                data: [],
+                borderColor: 'rgb(25, 135, 84)',
+                backgroundColor: 'rgba(25, 135, 84, 0.1)',
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Asistencia Mensual por Tipo de Evento'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Número de Asistencias'
+                    }
+                }
+            }
+        }
+    });
+});
+
+function loadDashboardData() {
+    fetch('/admin/dashboard-data')
+        .then(response => response.json())
+        .then(data => {
+            // Update statistics cards
+            document.getElementById('total-events').textContent = data.total_events;
+            document.getElementById('total-attendances').textContent = data.total_attendances;
+            document.getElementById('ensayos-count').textContent = data.ensayos_count;
+            document.getElementById('salidas-count').textContent = data.salidas_count;
+
+            // Update chart
+            updateChart(data.monthly_data);
+        })
+        .catch(error => {
+            console.error('Error loading dashboard data:', error);
+            // Hide stats row if there's an error
+            document.getElementById('stats-row').style.display = 'none';
+        });
+}
+
+function updateChart(monthlyData) {
+    const ensayosData = [];
+    const salidasData = [];
+    const labels = [];
+
+    // Group data by month
+    const groupedData = {};
+    monthlyData.forEach(item => {
+        if (!groupedData[item.month]) {
+            groupedData[item.month] = { ensayos: 0, salidas: 0 };
+        }
+        if (item.type === 'ensayo') {
+            groupedData[item.month].ensayos = item.attendances;
+        } else if (item.type === 'salida') {
+            groupedData[item.month].salidas = item.attendances;
+        }
+    });
+
+    // Sort months and create chart data
+    Object.keys(groupedData).sort().forEach(month => {
+        labels.push(formatMonth(month));
+        ensayosData.push(groupedData[month].ensayos);
+        salidasData.push(groupedData[month].salidas);
+    });
+
+    window.attendanceChart.data.labels = labels;
+    window.attendanceChart.data.datasets[0].data = ensayosData;
+    window.attendanceChart.data.datasets[1].data = salidasData;
+    window.attendanceChart.update();
+}
+
+function formatMonth(monthStr) {
+    // Convert "2025-01" to "Ene 2025"
+    const [year, month] = monthStr.split('-');
+    const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+    return `${monthNames[parseInt(month) - 1]} ${year}`;
+}
+</script>
 {{end}}

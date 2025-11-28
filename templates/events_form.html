@@ -1,0 +1,59 @@
+{{define "content"}}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h2>{{if .ID}}Editar Evento{{else}}Crear Nuevo Evento{{end}}</h2>
+                </div>
+                <div class="card-body">
+                    <form action="{{if .ID}}/admin/events/update{{else}}/admin/events/store{{end}}" method="POST">
+                        {{if .ID}}
+                        <input type="hidden" name="id" value="{{.ID}}">
+                        {{end}}
+
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Nombre del Evento</label>
+                            <input type="text" class="form-control" id="name" name="name" value="{{.Name}}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="type" class="form-label">Tipo de Evento</label>
+                            <select class="form-control" id="type" name="type" required>
+                                <option value="">Seleccionar tipo</option>
+                                <option value="ensayo" {{if eq .Type "ensayo"}}selected{{end}}>Ensayo</option>
+                                <option value="salida" {{if eq .Type "salida"}}selected{{end}}>Salida</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="date" class="form-label">Fecha</label>
+                            <input type="date" class="form-control" id="date" name="date" value="{{if .Date}}{{.Date.Format "2006-01-02"}}{{end}}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="time" class="form-label">Hora</label>
+                            <input type="text" class="form-control" id="time" name="time" value="{{.Time}}" placeholder="4:00 PM" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="location" class="form-label">Ubicación</label>
+                            <input type="text" class="form-control" id="location" name="location" value="{{.Location}}" placeholder="Ej: Iglesia Principal" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Descripción</label>
+                            <textarea class="form-control" id="description" name="description" rows="3">{{.Description}}</textarea>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">{{if .ID}}Actualizar{{else}}Crear{{end}} Evento</button>
+                            <a href="/admin/events" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{end}}
